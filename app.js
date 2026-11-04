@@ -2,7 +2,6 @@
   const image = document.getElementById("poster-image");
   const pdf = document.getElementById("poster-pdf");
   const placeholder = document.getElementById("poster-placeholder");
-  const status = document.getElementById("poster-status");
   const download = document.getElementById("poster-download");
   const downloadLabel = document.getElementById("download-label");
   const imageCandidates = [
@@ -20,13 +19,11 @@
     if (kind === "image") {
       image.hidden = false;
       image.src = url;
-      status.textContent = "Original image poster";
       download.download = url.split("/").pop();
       downloadLabel.textContent = "Download original";
     } else {
       pdf.hidden = false;
       pdf.src = url;
-      status.textContent = "Original PDF poster";
       download.removeAttribute("download");
       download.target = "_blank";
       download.rel = "noopener";
@@ -55,7 +52,6 @@
         return;
       }
     } catch { /* Leave the missing-poster state in place when offline. */ }
-    status.textContent = "Add the original poster to begin";
   };
 
   const getQrTarget = () => {
