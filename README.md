@@ -42,7 +42,7 @@ Anyone scanning the online QR code needs internet access to open the website and
 ## Deploy to Vercel
 
 1. Put the project in a Git repository and import it in Vercel, or deploy the folder using the Vercel CLI.
-2. Select the **Other** framework preset. There is no build command; serve the project root as the output directory.
+2. The checked-in `vercel.json` selects the **Other** framework preset and sets the project root as the output directory. There is no build step.
 3. Deploy and copy the resulting public HTTPS URL.
 4. Put that URL in `site-config.js`, commit the change, and redeploy.
 5. Open the deployed page and generate/download the final QR code there.
