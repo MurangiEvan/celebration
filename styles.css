@@ -58,12 +58,13 @@ button:focus-visible, a:focus-visible, .poster-viewport:focus-visible {
 .wordmark-mark {
   display: grid;
   place-items: center;
-  width: 39px;
-  height: 39px;
+  width: 43px;
+  height: 43px;
   border: 1px solid var(--gold);
   border-radius: 50%;
   color: #875c1e;
-  font-size: 16px;
+  font-size: 13px;
+  letter-spacing: -.04em;
 }
 
 .topbar-note, .site-footer { color: var(--muted); font-size: 12px; }
@@ -79,13 +80,9 @@ main { width: min(1120px, calc(100% - 36px)); margin: 0 auto; }
 .intro-rule span { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
 
 .poster-section { width: 100%; }
-.viewer-shell { overflow: hidden; border: 1px solid rgba(29, 43, 55, .16); background: var(--white); box-shadow: 0 18px 45px rgba(34, 39, 38, .11); }
-.viewer-toolbar, .viewer-footer { min-height: 54px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 14px; }
-.viewer-toolbar { border-bottom: 1px solid var(--line); background: rgba(255, 253, 248, .96); }
-.viewer-footer { min-height: 43px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
-.control-group { display: flex; align-items: center; gap: 8px; }
-.control-group-end { justify-content: flex-end; }
-.icon-button, .text-button {
+.viewer-shell { overflow: visible; }
+.viewer-footer { min-height: 43px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; color: var(--muted); font-size: 11px; }
+.text-button {
   min-width: 34px;
   height: 34px;
   display: inline-flex;
@@ -96,21 +93,17 @@ main { width: min(1120px, calc(100% - 36px)); margin: 0 auto; }
   background: #fffefa;
   cursor: pointer;
 }
-.icon-button { font-family: var(--serif); font-size: 20px; line-height: 1; }
-.icon-button svg, .download-link svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.download-link svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
 .text-button { padding: 0 12px; font-size: 12px; }
-.icon-button:hover, .text-button:hover { border-color: var(--gold); background: #fbf3e2; }
-.icon-button:disabled, .text-button:disabled, .generate-button:disabled { cursor: not-allowed; opacity: .48; }
-#zoom-level { min-width: 39px; color: var(--muted); font-size: 11px; text-align: center; }
+.text-button:hover { border-color: var(--gold); background: #fbf3e2; }
+.text-button:disabled, .generate-button:disabled { cursor: not-allowed; opacity: .48; }
 
 .poster-viewport {
   position: relative;
   height: min(72vh, 790px);
   min-height: 360px;
   overflow: hidden;
-  background-color: #e5e0d5;
-  background-image: radial-gradient(rgba(29, 43, 55, .09) .7px, transparent .7px);
-  background-size: 13px 13px;
+  background: transparent;
   touch-action: none;
   overscroll-behavior: contain;
 }
@@ -145,13 +138,10 @@ main { width: min(1120px, calc(100% - 36px)); margin: 0 auto; }
 @media (max-width: 650px) {
   .topbar { min-height: 66px; }
   .topbar-note { max-width: 115px; text-align: right; line-height: 1.4; }
-  main { width: min(100% - 20px, 550px); }
-  .intro { padding: 34px 8px 21px; }
-  .viewer-toolbar { gap: 5px; padding: 7px; }
-  .control-group { gap: 5px; }
-  .icon-button { min-width: 32px; }
-  .text-button { min-width: 32px; padding: 0 8px; }
-  .poster-viewport { height: min(67vh, 720px); min-height: 340px; }
+    main { width: min(100% - 20px, 550px); }
+    .intro { padding: 34px 8px 21px; }
+    .text-button { min-width: 32px; padding: 0 8px; }
+    .poster-viewport { height: min(67vh, 720px); min-height: 340px; }
   .share-section { grid-template-columns: 1fr; gap: 22px; padding: 46px 8px 48px; }
   .share-copy h2 { font-size: 32px; }
   .qr-panel { min-height: 180px; }
@@ -159,7 +149,6 @@ main { width: min(1120px, calc(100% - 36px)); margin: 0 auto; }
 }
 
 @media (max-width: 380px) {
-  .fullscreen-button { display: none; }
   .poster-viewport { min-height: 310px; }
   .viewer-footer { padding-inline: 9px; }
 }

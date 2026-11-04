@@ -3,7 +3,6 @@
   const image = document.getElementById("poster-image");
   const pdf = document.getElementById("poster-pdf");
   const placeholder = document.getElementById("poster-placeholder");
-  const zoomLabel = document.getElementById("zoom-level");
   const status = document.getElementById("poster-status");
   const download = document.getElementById("poster-download");
   const downloadLabel = document.getElementById("download-label");
@@ -20,16 +19,16 @@
   let panY = 0;
   let dragStart = null;
   let pinchStart = null;
+  let fitOnResize = true;
   let qrPng = "";
   let qrSvg = "";
 
-  const setZoom = (value) => {
+  const setZoom = (value, fitting = false) => {
     zoom = Math.min(maxZoom, Math.max(minZoom, value));
     viewport.style.setProperty("--zoom", zoom);
     viewport.style.setProperty("--pan-x", `${panX}px`);
     viewport.style.setProperty("--pan-y", `${panY}px`);
-    zoomLabel.value = `${Math.round(zoom * 100)}%`;
-    zoomLabel.textContent = `${Math.round(zoom * 100)}%`;
+    if (!fitting) fitOnResize = false;
     viewport.classList.toggle("is-draggable", zoom > 0.25 && !pdf.hidden);
   };
 
@@ -40,9 +39,8 @@
     zoom = Math.min(availableWidth / image.naturalWidth, availableHeight / image.naturalHeight, 1);
     panX = 0;
     panY = 0;
-    setZoom(zoom);
-    zoomLabel.value = "Fit";
-    zoomLabel.textContent = "Fit";
+    fitOnResize = true;
+    setZoom(zoom, true);
   };
 
   const setPoster = (url, kind) => {
@@ -56,10 +54,6 @@
       status.textContent = "Original image poster";
       download.download = url.split("/").pop();
       downloadLabel.textContent = "Download original";
-      document.getElementById("zoom-in").disabled = false;
-      document.getElementById("zoom-out").disabled = false;
-      document.getElementById("fit-poster").disabled = false;
-      document.getElementById("reset-zoom").disabled = false;
     } else {
       pdf.hidden = false;
       pdf.src = url;
@@ -68,10 +62,6 @@
       download.target = "_blank";
       download.rel = "noopener";
       downloadLabel.textContent = "Open original PDF";
-      ["zoom-in", "zoom-out", "fit-poster", "reset-zoom"].forEach((id) => {
-        document.getElementById(id).disabled = true;
-      });
-      zoomLabel.textContent = "PDF";
       viewport.classList.remove("is-draggable");
     }
   };
@@ -99,21 +89,6 @@
     } catch { /* Leave the missing-poster state in place when offline. */ }
     status.textContent = "Add the original poster to begin";
   };
-
-  document.getElementById("zoom-in").addEventListener("click", () => setZoom(zoom * 1.25));
-  document.getElementById("zoom-out").addEventListener("click", () => setZoom(zoom / 1.25));
-  document.getElementById("fit-poster").addEventListener("click", fitImage);
-  document.getElementById("reset-zoom").addEventListener("click", () => {
-    panX = 0;
-    panY = 0;
-    setZoom(1);
-  });
-  document.getElementById("fullscreen").addEventListener("click", async () => {
-    try {
-      if (document.fullscreenElement) await document.exitFullscreen();
-      else await viewport.requestFullscreen();
-    } catch { status.textContent = "Fullscreen is unavailable in this browser"; }
-  });
 
   viewport.addEventListener("wheel", (event) => {
     if (image.hidden) return;
@@ -248,7 +223,7 @@
   updateQrAvailability();
   loadQrLibrary();
   window.addEventListener("resize", () => {
-    if (!image.hidden && zoomLabel.textContent === "Fit") fitImage();
+    if (!image.hidden && fitOnResize) fitImage();
   });
   tryImages();
 })();
