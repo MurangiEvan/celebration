@@ -1,47 +1,17 @@
 (() => {
-  const viewport = document.getElementById("poster-viewport");
   const image = document.getElementById("poster-image");
   const pdf = document.getElementById("poster-pdf");
   const placeholder = document.getElementById("poster-placeholder");
   const status = document.getElementById("poster-status");
   const download = document.getElementById("poster-download");
   const downloadLabel = document.getElementById("download-label");
-  const pointers = new Map();
   const imageCandidates = [
     "poster/birthday programme.png",
     "poster/birthday poster.png",
     ...["jpg", "png", "webp", "jpeg", "avif"].map((extension) => `public/poster/birthday-poster.${extension}`)
   ];
-  const minZoom = 0.08;
-  const maxZoom = 6;
-  let zoom = 1;
-  let panX = 0;
-  let panY = 0;
-  let dragStart = null;
-  let pinchStart = null;
-  let fitOnResize = true;
   let qrPng = "";
   let qrSvg = "";
-
-  const setZoom = (value, fitting = false) => {
-    zoom = Math.min(maxZoom, Math.max(minZoom, value));
-    viewport.style.setProperty("--zoom", zoom);
-    viewport.style.setProperty("--pan-x", `${panX}px`);
-    viewport.style.setProperty("--pan-y", `${panY}px`);
-    if (!fitting) fitOnResize = false;
-    viewport.classList.toggle("is-draggable", zoom > 0.25 && !pdf.hidden);
-  };
-
-  const fitImage = () => {
-    if (!image.naturalWidth || !image.naturalHeight) return;
-    const availableWidth = Math.max(100, viewport.clientWidth - 36);
-    const availableHeight = Math.max(100, viewport.clientHeight - 36);
-    zoom = Math.min(availableWidth / image.naturalWidth, availableHeight / image.naturalHeight, 1);
-    panX = 0;
-    panY = 0;
-    fitOnResize = true;
-    setZoom(zoom, true);
-  };
 
   const setPoster = (url, kind) => {
     placeholder.hidden = true;
@@ -49,7 +19,6 @@
     download.hidden = false;
     if (kind === "image") {
       image.hidden = false;
-      image.onload = fitImage;
       image.src = url;
       status.textContent = "Original image poster";
       download.download = url.split("/").pop();
@@ -62,7 +31,6 @@
       download.target = "_blank";
       download.rel = "noopener";
       downloadLabel.textContent = "Open original PDF";
-      viewport.classList.remove("is-draggable");
     }
   };
 
@@ -89,61 +57,6 @@
     } catch { /* Leave the missing-poster state in place when offline. */ }
     status.textContent = "Add the original poster to begin";
   };
-
-  viewport.addEventListener("wheel", (event) => {
-    if (image.hidden) return;
-    event.preventDefault();
-    setZoom(zoom * (event.deltaY < 0 ? 1.12 : 1 / 1.12));
-  }, { passive: false });
-
-  viewport.addEventListener("keydown", (event) => {
-    if (image.hidden) return;
-    if (event.key === "+" || event.key === "=") setZoom(zoom * 1.2);
-    else if (event.key === "-") setZoom(zoom / 1.2);
-    else if (event.key === "0") fitImage();
-  });
-
-  viewport.addEventListener("pointerdown", (event) => {
-    if (image.hidden || event.target !== image) return;
-    viewport.setPointerCapture(event.pointerId);
-    pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
-    if (pointers.size === 1) {
-      dragStart = { x: event.clientX - panX, y: event.clientY - panY };
-      viewport.classList.add("is-dragging");
-    } else if (pointers.size === 2) {
-      const [first, second] = [...pointers.values()];
-      pinchStart = { distance: Math.hypot(first.x - second.x, first.y - second.y), zoom };
-      dragStart = null;
-    }
-  });
-
-  viewport.addEventListener("pointermove", (event) => {
-    if (!pointers.has(event.pointerId)) return;
-    pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
-    if (pointers.size > 1 && pinchStart) {
-      const [first, second] = [...pointers.values()];
-      const distance = Math.hypot(first.x - second.x, first.y - second.y);
-      setZoom(pinchStart.zoom * distance / pinchStart.distance);
-    } else if (dragStart) {
-      panX = event.clientX - dragStart.x;
-      panY = event.clientY - dragStart.y;
-      setZoom(zoom);
-    }
-  });
-
-  const endPointer = (event) => {
-    pointers.delete(event.pointerId);
-    if (pointers.size < 2) pinchStart = null;
-    if (pointers.size === 1) {
-      const [point] = pointers.values();
-      dragStart = { x: point.x - panX, y: point.y - panY };
-    } else {
-      dragStart = null;
-      viewport.classList.remove("is-dragging");
-    }
-  };
-  viewport.addEventListener("pointerup", endPointer);
-  viewport.addEventListener("pointercancel", endPointer);
 
   const getQrTarget = () => {
     const value = typeof window.BIRTHDAY_SITE_URL === "string" ? window.BIRTHDAY_SITE_URL.trim() : "";
@@ -222,8 +135,5 @@
 
   updateQrAvailability();
   loadQrLibrary();
-  window.addEventListener("resize", () => {
-    if (!image.hidden && fitOnResize) fitImage();
-  });
   tryImages();
 })();
