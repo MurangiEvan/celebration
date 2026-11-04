@@ -29,13 +29,13 @@ With the existing poster or a supported asset in `public/poster/`, reload the pa
 
 ## Configure the public URL and QR code
 
-This is a static site, so it cannot read a Vercel environment variable at runtime. After deployment, edit `site-config.js` and set the complete deployed URL, including `https://`:
+This is a static site, so it cannot read a Vercel environment variable at runtime. Set the complete deployed URL, including `https://`, in `site-config.js`:
 
 ```js
-window.BIRTHDAY_SITE_URL = "https://your-deployed-domain.example";
+window.BIRTHDAY_SITE_URL = "https://celebration-two-zeta.vercel.app/";
 ```
 
-Commit or upload that change and redeploy. Reload the live page, choose **Generate QR code**, and download the PNG or SVG. The generated code is black on white, has a four-module quiet zone, uses high error correction, and is 1200 pixels wide for print. The URL must use HTTPS. A configured localhost URL is explicitly marked as a development test and must not be printed as the final code. If no production URL is configured, generation remains disabled.
+Commit or upload URL changes and redeploy. Reload the live page, choose **Generate QR code**, and download the PNG or SVG. The generated code is black on white, has a four-module quiet zone, uses high error correction, and is 1200 pixels wide for print. The URL must use HTTPS. A configured localhost URL is explicitly marked as a development test and must not be printed as the final code. If no production URL is configured, generation remains disabled.
 
 Anyone scanning the online QR code needs internet access to open the website and poster.
 
@@ -47,7 +47,7 @@ Anyone scanning the online QR code needs internet access to open the website and
 4. Put that URL in `site-config.js`, commit the change, and redeploy.
 5. Open the deployed page and generate/download the final QR code there.
 
-Do not print a QR code generated with a localhost URL. The production URL is not preconfigured in this workspace, and deployment has not been performed here.
+Do not print a QR code generated with a localhost URL. Verify the production URL and test-scan the generated QR code before printing.
 
 ## Update the poster
 

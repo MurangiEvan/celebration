@@ -1,1 +1,1 @@
-window.BIRTHDAY_SITE_URL = "";
+window.BIRTHDAY_SITE_URL = "https://celebration-two-zeta.vercel.app/";
