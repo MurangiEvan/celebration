@@ -1,0 +1,1 @@
+Place the original birthday poster image or PDF in this folder. See the project README for supported filenames.

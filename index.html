@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3eee3">
+  <meta name="description" content="View the original birthday programme poster.">
+  <title>Birthday Programme</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="site-config.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="./" aria-label="Birthday programme home">
+      <span class="wordmark-mark" aria-hidden="true">60</span>
+      <span>Birthday<br>programme</span>
+    </a>
+    <span class="topbar-note">A day worth celebrating</span>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">The celebration</p>
+      <h1 id="page-title">Birthday programme</h1>
+      <p class="intro-rule" aria-hidden="true"><span></span></p>
+    </section>
+
+    <section class="poster-section" aria-label="Original birthday poster">
+      <div class="viewer-shell">
+        <div class="viewer-toolbar" aria-label="Poster controls">
+          <div class="control-group">
+            <button class="icon-button" id="zoom-out" type="button" aria-label="Zoom out" title="Zoom out" disabled>−</button>
+            <output id="zoom-level" aria-live="polite">Fit</output>
+            <button class="icon-button" id="zoom-in" type="button" aria-label="Zoom in" title="Zoom in" disabled>+</button>
+          </div>
+          <div class="control-group control-group-end">
+            <button class="text-button" id="fit-poster" type="button" disabled>Fit</button>
+            <button class="text-button" id="reset-zoom" type="button" disabled>Reset</button>
+            <button class="icon-button fullscreen-button" id="fullscreen" type="button" aria-label="View fullscreen" title="View fullscreen">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M21 16v5h-5M3 16v5h5" /></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="poster-viewport" id="poster-viewport" tabindex="0" aria-label="Poster viewer">
+          <div class="poster-placeholder" id="poster-placeholder" role="status">
+            <span class="placeholder-star" aria-hidden="true">✳</span>
+            <h2>Poster file not found</h2>
+            <p>Add the original image or PDF to <code>public/poster/</code> to display it here.</p>
+            <p class="placeholder-path">Expected: <code>birthday-poster.jpg</code> or <code>birthday-poster.pdf</code></p>
+          </div>
+          <img class="poster-image" id="poster-image" alt="Original birthday programme poster" draggable="false" hidden>
+          <iframe class="poster-pdf" id="poster-pdf" title="Birthday poster PDF" hidden></iframe>
+        </div>
+
+        <div class="viewer-footer">
+          <span id="poster-status" aria-live="polite">Original poster</span>
+          <a class="download-link" id="poster-download" href="#" download hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 17v4h14v-4" /></svg>
+            <span id="download-label">Download original</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="share-section" aria-labelledby="share-title">
+      <div class="share-copy">
+        <p class="eyebrow">Share the programme</p>
+        <h2 id="share-title">A little celebration,<br>wherever you are.</h2>
+        <p class="share-description">Create a print-ready QR code for the public poster page.</p>
+      </div>
+      <div class="qr-panel">
+        <div class="qr-state" id="qr-state" role="status" aria-live="polite">
+          <span class="qr-state-mark" aria-hidden="true">◇</span>
+          <p>Set the public website URL in <code>site-config.js</code> after deployment to generate the final QR code.</p>
+        </div>
+        <div class="qr-result" id="qr-result" hidden>
+          <img id="qr-image" alt="QR code linking to the public birthday poster">
+          <p class="qr-url" id="qr-url"></p>
+          <div class="qr-downloads">
+            <button type="button" class="text-button" id="download-png">Download PNG</button>
+            <button type="button" class="text-button" id="download-svg">Download SVG</button>
+          </div>
+        </div>
+        <button class="generate-button" id="generate-qr" type="button" disabled>Generate QR code</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Made for a day worth remembering</span>
+    <span>Internet access is required to view the online poster.</span>
+  </footer>
+</body>
+</html>
